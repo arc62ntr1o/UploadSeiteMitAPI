@@ -1,0 +1,67 @@
+<form id="uploadForm">
+
+  <input type="number" id="alter" placeholder="Alter" required>
+  <input type="number" id="geschlecht" placeholder="1 = männlich, 0 = weiblich" required>
+  <input type="number" id="groesse" placeholder="Größe (cm)" required>
+  <input type="number" id="gewicht" placeholder="Gewicht (kg)" required>
+
+  <input type="number" id="schritte" placeholder="Schritte pro Tag">
+  <input type="number" id="sys" placeholder="Blutdruck systolisch">
+  <input type="number" id="dia" placeholder="Blutdruck diastolisch">
+  <input type="number" id="glukose" placeholder="Glukose mg/dl">
+  <input type="number" id="spo2" placeholder="SpO2 %">
+  <input type="number" step="0.1" id="temp" placeholder="Temperatur °C">
+  <input type="number" id="stress" placeholder="Stress 0-100">
+  <input type="number" id="kalorien" placeholder="Kalorien Ø 7 Tage">
+
+  <input type="number" id="fussball" placeholder="Min Fußball">
+  <input type="number" id="laufen" placeholder="Min Laufen">
+  <input type="number" id="kraft" placeholder="Min Krafttraining">
+
+  <button type="submit">Absenden</button>
+</form>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const data = {
+    Alter: Number(alter.value),
+    Geschlecht_maennlich: Number(geschlecht.value),
+    Groesse_cm: Number(groesse.value),
+    Gewicht_kg: Number(gewicht.value),
+    Schritte_pro_Tag: Number(schritte.value),
+    Blutdruck_sys: Number(sys.value),
+    Blutdruck_dia: Number(dia.value),
+    Glukose_mgdl: Number(glukose.value),
+    SpO2_prozent: Number(spo2.value),
+    Temperatur_c: Number(temp.value),
+    Stress_0_100: Number(stress.value),
+    Kalorienaufnahme_durchschnittlich_7: Number(kalorien.value),
+
+    Blutdruck_fehlt: 0,
+    is_missing_glu: glukose.value ? 0 : 1,
+    is_missing_spo2: spo2.value ? 0 : 1,
+    is_missing_temp: temp.value ? 0 : 1,
+
+    min_fussball: Number(fussball.value || 0),
+    min_laufen: Number(laufen.value || 0),
+    min_radfahren: 0,
+    min_schwimmen: 0,
+    min_krafttraining: Number(kraft.value || 0),
+    min_basketball: 0,
+    min_tennis: 0,
+    min_volleyball: 0,
+    min_yoga: 0,
+    min_hiit: 0
+  };
+
+  await fetch("/upload/api/upload.php", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(data)
+  });
+
+  alert("Daten erfolgreich gesendet");
+});
+</script>
